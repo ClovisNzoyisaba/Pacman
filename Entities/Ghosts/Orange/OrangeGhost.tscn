@@ -1,6 +1,16 @@
-[gd_scene load_steps=2 format=3 uid="uid://cmv6uxg210t2x"]
+[gd_scene load_steps=3 format=3 uid="uid://cmv6uxg210t2x"]
 
 [ext_resource type="Script" uid="uid://b53rda6pjssq" path="res://Entities/Ghosts/Orange/orange_ghost.gd" id="1_k63sm"]
 
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_hv1yv"]
+size = Vector2(24, 24)
+
 [node name="OrangeGhost" type="Area2D"]
 script = ExtResource("1_k63sm")
+
+[node name="Polygon2D" type="Polygon2D" parent="."]
+color = Color(1, 0.647059, 0, 1)
+polygon = PackedVector2Array(-12, -12, 12, -12, 12, 12, -12, 12)
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="."]
+shape = SubResource("RectangleShape2D_hv1yv")

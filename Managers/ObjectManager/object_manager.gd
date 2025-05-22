@@ -10,6 +10,7 @@ const MAIN_MENU = preload("res://UI/MainMenu.tscn")
 var cyan_ghost: CyanGhost
 var pink_ghost: PinkGhost
 var red_ghost: RedGhost
+var orange_ghost: OrangeGhost
 var pacman: Pacman
 var main_menu: MainMenu
 
@@ -35,6 +36,11 @@ func create_pink_ghost(position: Vector2) -> void:
 	pink_ghost = PINK_GHOST.instantiate()
 	pink_ghost.setup(position)
 	root.add_child(pink_ghost)
+	
+func create_orange_ghost(position: Vector2) -> void:
+	orange_ghost = ORANGE_GHOST.instantiate()
+	orange_ghost.setup(position)
+	root.add_child(orange_ghost)
 
 func create_main_menu() -> void:
 	main_menu = MAIN_MENU.instantiate()

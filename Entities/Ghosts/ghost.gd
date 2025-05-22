@@ -6,13 +6,14 @@ var curr_path: Array
 var speed: int = 100
 
 enum GHOSTSTATE {NORMAL, EATABLE}
+var curr_ghost_state: GHOSTSTATE
 
 func _ready() -> void:
 	connect("body_entered", Callable(self, "_on_body_entered"))
 	
-
-func scatter() -> void:
-	pass
+func scatter(position: Vector2) -> void:
+	speed = 200
+	curr_path = BFS(tilemap.local_to_map(self.position), tilemap.local_to_map(position), graph)
 	
 func BFS(start: Vector2i, goal: Vector2i, graph: Dictionary) -> Array:
 	var queue = [start]
@@ -50,7 +51,5 @@ func setup(position: Vector2):
 	tilemap = GameManager.getTileMap()
 	self.position = tilemap.map_to_local(tilemap.local_to_map(position))
 	
-	
 func _on_body_entered(body: Node) -> void:
-	# Emit your own signal if desired
 	print("collision")

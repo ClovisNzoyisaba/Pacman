@@ -8,3 +8,4 @@ func _ready() -> void:
 	GameManager.objectManager.create_pacman(Vector2(305, 112), Vector2i(0,1))
 	GameManager.objectManager.create_red_ghost(Vector2(430, 560))
 	GameManager.objectManager.create_pink_ghost(Vector2(307,724))
+	GameManager.objectManager.create_orange_ghost(Vector2(523,80))
