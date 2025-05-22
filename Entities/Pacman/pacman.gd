@@ -7,10 +7,10 @@ var curr_direction: Vector2i
 var next_direction: Vector2i
 var grid_position: Vector2i
 
-var speed: int = 175
+var speed: int = 150
 
 func _ready() -> void:
-	pass
+	update_player_grid_position()
 	
 func _physics_process(delta: float) -> void:
 	update_player_grid_position()

@@ -1,18 +1,20 @@
 class_name Ghost extends Area2D
 
 var graph: Dictionary
-var curr_path: Dictionary
+var tilemap: TileMapLayer
+var curr_path: Array
+var speed: int = 150
 
 enum GHOSTSTATE {NORMAL, EATABLE}
 
 func _ready() -> void:
-	graph = GameManager.getGraph()
+	pass
 	
 
 func scatter() -> void:
 	pass
 	
-func BFS(start: Vector2i, goal: Vector2i, graph: Dictionary) -> void:
+func BFS(start: Vector2i, goal: Vector2i, graph: Dictionary) -> Array:
 	var queue = [start]
 	var visited = {}
 	var came_from = {}
@@ -33,8 +35,7 @@ func BFS(start: Vector2i, goal: Vector2i, graph: Dictionary) -> void:
 
 	return reconstruct_path(came_from, start, goal)
 		
-
-func reconstruct_path(came_from, start: Vector2i, goal: Vector2i):
+func reconstruct_path(came_from, start: Vector2i, goal: Vector2i) -> Array:
 	var path = []
 	var current = goal
 
@@ -43,3 +44,11 @@ func reconstruct_path(came_from, start: Vector2i, goal: Vector2i):
 		current = came_from[current]
 
 	return path		
+
+func setup(position: Vector2):
+	graph = GameManager.getGraph()
+	tilemap = GameManager.getTileMap()
+	self.position = tilemap.map_to_local(tilemap.local_to_map(position))
+	
+	
+	

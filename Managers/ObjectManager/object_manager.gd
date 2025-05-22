@@ -23,8 +23,13 @@ func _init(root: Game) -> void:
 
 func create_ghosts() -> void:
 	cyan_ghost = CYAN_GHOST.instantiate()
-	pink_ghost = PINK_GHOST.instantiate()
+	#pink_ghost = PINK_GHOST.instantiate()
+	#red_ghost = RED_GHOST.instantiate()
+
+func create_red_ghost(position: Vector2) -> void:
 	red_ghost = RED_GHOST.instantiate()
+	red_ghost.setup(position)
+	root.add_child(red_ghost)
 
 func create_main_menu() -> void:
 	main_menu = MAIN_MENU.instantiate()
