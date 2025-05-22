@@ -31,6 +31,11 @@ func create_red_ghost(position: Vector2) -> void:
 	red_ghost.setup(position)
 	root.add_child(red_ghost)
 
+func create_pink_ghost(position: Vector2) -> void:
+	pink_ghost = PINK_GHOST.instantiate()
+	pink_ghost.setup(position)
+	root.add_child(pink_ghost)
+
 func create_main_menu() -> void:
 	main_menu = MAIN_MENU.instantiate()
 	root.add(main_menu)

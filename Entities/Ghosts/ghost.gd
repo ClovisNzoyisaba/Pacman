@@ -3,7 +3,7 @@ class_name Ghost extends Area2D
 var graph: Dictionary
 var tilemap: TileMapLayer
 var curr_path: Array
-var speed: int = 150
+var speed: int = 100
 
 enum GHOSTSTATE {NORMAL, EATABLE}
 

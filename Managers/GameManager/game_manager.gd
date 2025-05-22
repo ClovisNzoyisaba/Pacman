@@ -41,3 +41,6 @@ func setState(state: TransitionManager.STATE):
 	
 func get_pacman_grid_position() -> Vector2i:
 	return objectManager.pacman.grid_position
+
+func get_pacman_curr_dir() -> Vector2i:
+	return objectManager.pacman.curr_direction
