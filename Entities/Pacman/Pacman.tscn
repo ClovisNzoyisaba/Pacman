@@ -1,0 +1,16 @@
+[gd_scene load_steps=3 format=3 uid="uid://daf013hmnhsxs"]
+
+[ext_resource type="Script" uid="uid://iiioswwj5pcx" path="res://Entities/Pacman/pacman.gd" id="1_r0uqe"]
+
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_r0uqe"]
+size = Vector2(24, 24)
+
+[node name="Pacman" type="CharacterBody2D"]
+script = ExtResource("1_r0uqe")
+
+[node name="Polygon2D" type="Polygon2D" parent="."]
+color = Color(1, 1, 0.6, 1)
+polygon = PackedVector2Array(-12, -12, -12, 12, 12, 12, 12, -0.21648, 12, -12)
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="."]
+shape = SubResource("RectangleShape2D_r0uqe")

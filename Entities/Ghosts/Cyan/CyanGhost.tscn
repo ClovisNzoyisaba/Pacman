@@ -1,0 +1,6 @@
+[gd_scene load_steps=2 format=3 uid="uid://cg8i30twbk68y"]
+
+[ext_resource type="Script" uid="uid://di8lgunuruhyp" path="res://Entities/Ghosts/Cyan/cyan_ghost.gd" id="1_g4i2b"]
+
+[node name="CyanGhost" type="Area2D"]
+script = ExtResource("1_g4i2b")

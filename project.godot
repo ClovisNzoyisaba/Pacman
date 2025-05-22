@@ -1,0 +1,39 @@
+; Engine configuration file.
+; It's best edited using the editor UI and not directly,
+; since the parameters that go here are not all obvious.
+;
+; Format:
+;   [section] ; section goes between []
+;   param=value ; assign values to parameters
+
+config_version=5
+
+[application]
+
+config/name="Pacman"
+run/main_scene="uid://bxw01283sdrki"
+config/features=PackedStringArray("4.4", "Mobile")
+config/icon="res://icon.svg"
+
+[autoload]
+
+GameManager="*res://Managers/GameManager/game_manager.gd"
+
+[display]
+
+window/size/viewport_width=672
+window/size/viewport_height=864
+window/stretch/mode="canvas_items"
+
+[file_customization]
+
+folder_colors={
+"res://Entities/Ghosts/Cyan/": "teal",
+"res://Entities/Ghosts/Orange/": "orange",
+"res://Entities/Ghosts/Pink/": "pink",
+"res://Entities/Ghosts/Red/": "red"
+}
+
+[rendering]
+
+renderer/rendering_method="mobile"

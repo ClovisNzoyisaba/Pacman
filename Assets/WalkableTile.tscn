@@ -1,0 +1,5 @@
+[gd_scene format=3 uid="uid://dvels2qc1c83k"]
+
+[node name="WalkableTile" type="Polygon2D"]
+color = Color(0.745098, 0.745098, 0.745098, 1)
+polygon = PackedVector2Array(-16, -16, 16, -16, 16, 16, -16, 16)

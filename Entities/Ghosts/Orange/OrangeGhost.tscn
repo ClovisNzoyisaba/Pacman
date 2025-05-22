@@ -1,0 +1,6 @@
+[gd_scene load_steps=2 format=3 uid="uid://cmv6uxg210t2x"]
+
+[ext_resource type="Script" uid="uid://b53rda6pjssq" path="res://Entities/Ghosts/Orange/orange_ghost.gd" id="1_k63sm"]
+
+[node name="OrangeGhost" type="Area2D"]
+script = ExtResource("1_k63sm")

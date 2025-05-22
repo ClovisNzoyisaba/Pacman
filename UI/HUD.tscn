@@ -1,0 +1,20 @@
+[gd_scene load_steps=4 format=3 uid="uid://bl2j07shmt3vy"]
+
+[ext_resource type="Script" uid="uid://n1ug22qjrv4g" path="res://UI/hud.gd" id="1_ijstf"]
+[ext_resource type="Shader" uid="uid://mfaf5lt21my1" path="res://Assets/transition.gdshader" id="1_yixhe"]
+
+[sub_resource type="ShaderMaterial" id="ShaderMaterial_ijstf"]
+shader = ExtResource("1_yixhe")
+shader_parameter/progress = 0.0
+shader_parameter/gridSize = 10.0
+
+[node name="Hud" type="CanvasLayer"]
+script = ExtResource("1_ijstf")
+
+[node name="ColorRect" type="ColorRect" parent="."]
+material = SubResource("ShaderMaterial_ijstf")
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2

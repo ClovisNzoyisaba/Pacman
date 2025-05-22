@@ -1,0 +1,6 @@
+[gd_scene load_steps=2 format=3 uid="uid://c31ah3rfwssai"]
+
+[ext_resource type="Script" uid="uid://b6xt5nfjrcd3m" path="res://Entities/Ghosts/Pink/pink_ghost.gd" id="1_xka7l"]
+
+[node name="PinkGhost" type="Area2D"]
+script = ExtResource("1_xka7l")
