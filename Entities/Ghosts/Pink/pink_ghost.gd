@@ -1,6 +1,6 @@
 class_name PinkGhost extends Ghost
 
-var time_until_recalculation: float = 5.0
+var time_until_recalculation: float = 3.0
 var curr_time: float = 0.0
 var current_index: int = 0
 

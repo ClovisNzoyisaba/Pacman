@@ -49,7 +49,6 @@ func is_aligned_to_grid() -> bool:
 
 func update_player_grid_position():
 	grid_position = tilemap.local_to_map(position)
-	print(grid_position)
 		
 func setup(position: Vector2, curr_direction: Vector2):
 	graph = GameManager.getGraph()

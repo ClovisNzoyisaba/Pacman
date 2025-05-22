@@ -32,7 +32,5 @@ func _process(delta: float) -> void:
 func recalculate_path():
 	var start_tile = tilemap.local_to_map(position)
 	var target_tile = GameManager.get_pacman_grid_position()
-	print(start_tile)
-	print(target_tile)
 	curr_path = BFS(start_tile, target_tile, graph)
 	current_index = 0

@@ -16,7 +16,6 @@ func setup(tile_map_layer: TileMapLayer, root: Node, main_menu: MainMenu, hud: H
 	mapManager = MapManager.new(tile_map_layer)
 	musicManager = MusicManager.new()
 	objectManager = ObjectManager.new(root)
-	print(getTileMap())
 	transitionManager = TransitionManager.new()
 	uiManager = UIManager.new(main_menu, hud)
 

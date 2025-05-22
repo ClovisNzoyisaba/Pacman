@@ -8,7 +8,7 @@ var speed: int = 100
 enum GHOSTSTATE {NORMAL, EATABLE}
 
 func _ready() -> void:
-	pass
+	connect("body_entered", Callable(self, "_on_body_entered"))
 	
 
 func scatter() -> void:
@@ -51,4 +51,6 @@ func setup(position: Vector2):
 	self.position = tilemap.map_to_local(tilemap.local_to_map(position))
 	
 	
-	
+func _on_body_entered(body: Node) -> void:
+	# Emit your own signal if desired
+	print("collision")
