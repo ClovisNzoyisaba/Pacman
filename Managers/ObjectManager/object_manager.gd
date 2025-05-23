@@ -27,20 +27,26 @@ func create_ghosts() -> void:
 	#pink_ghost = PINK_GHOST.instantiate()
 	#red_ghost = RED_GHOST.instantiate()
 
-func create_red_ghost(position: Vector2) -> void:
+func create_red_ghost(position: Vector2, scatter_position: Vector2) -> void:
 	red_ghost = RED_GHOST.instantiate()
-	red_ghost.setup(position)
+	red_ghost.setup(position, scatter_position)
 	root.add_child(red_ghost)
 
-func create_pink_ghost(position: Vector2) -> void:
+func create_pink_ghost(position: Vector2, scatter_position: Vector2) -> void:
 	pink_ghost = PINK_GHOST.instantiate()
-	pink_ghost.setup(position)
+	pink_ghost.setup(position, scatter_position)
 	root.add_child(pink_ghost)
 	
-func create_orange_ghost(position: Vector2) -> void:
+func create_orange_ghost(position: Vector2, scatter_position: Vector2) -> void:
 	orange_ghost = ORANGE_GHOST.instantiate()
-	orange_ghost.setup(position)
+	orange_ghost.setup(position, scatter_position)
 	root.add_child(orange_ghost)
+
+func create_cyan_ghost(position: Vector2, scatter_position: Vector2) -> void:
+	cyan_ghost = CYAN_GHOST.instantiate()
+	cyan_ghost.setup(position, scatter_position)
+	root.add_child(cyan_ghost)	
+	
 
 func create_main_menu() -> void:
 	main_menu = MAIN_MENU.instantiate()
