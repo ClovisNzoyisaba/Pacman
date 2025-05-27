@@ -1,4 +1,4 @@
-[gd_scene load_steps=4 format=3 uid="uid://bl2j07shmt3vy"]
+[gd_scene load_steps=4 format=3 uid="uid://c018frag7pipl"]
 
 [ext_resource type="Script" uid="uid://n1ug22qjrv4g" path="res://UI/hud.gd" id="1_ijstf"]
 [ext_resource type="Shader" uid="uid://mfaf5lt21my1" path="res://Assets/transition.gdshader" id="1_yixhe"]
@@ -11,7 +11,7 @@ shader_parameter/gridSize = 10.0
 [node name="Hud" type="CanvasLayer"]
 script = ExtResource("1_ijstf")
 
-[node name="ColorRect" type="ColorRect" parent="."]
+[node name="TransitionScreen" type="ColorRect" parent="."]
 material = SubResource("ShaderMaterial_ijstf")
 anchors_preset = 15
 anchor_right = 1.0

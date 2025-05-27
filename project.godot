@@ -17,7 +17,7 @@ config/icon="res://icon.svg"
 
 [autoload]
 
-GameManager="*res://Managers/GameManager/game_manager.gd"
+GameManager="*res://Managers/game_manager.gd"
 
 [display]
 
@@ -31,8 +31,13 @@ folder_colors={
 "res://Entities/Ghosts/Cyan/": "teal",
 "res://Entities/Ghosts/Orange/": "orange",
 "res://Entities/Ghosts/Pink/": "pink",
-"res://Entities/Ghosts/Red/": "red"
+"res://Entities/Ghosts/Red/": "red",
+"res://Entities/Ghosts/TestGhost/": "purple"
 }
+
+[global_group]
+
+Ghosts=""
 
 [rendering]
 

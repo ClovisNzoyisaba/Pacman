@@ -1,10 +1,4 @@
-extends Node
-
-# map manager updates graph
-
-# ui manager updates score, lives, button presses (needs HUD and main menu references)
-
-# transition manager updates states, ends one game state and begins another also sends signal to ui manager to play a transition animation 
+extends Node 
 
 var mapManager: MapManager
 var musicManager: MusicManager
@@ -43,3 +37,48 @@ func get_pacman_grid_position() -> Vector2i:
 
 func get_pacman_curr_dir() -> Vector2i:
 	return objectManager.pacman.curr_direction
+
+func start_new_game():
+	pass
+
+func create_entities():
+	objectManager.create_pacman()
+	objectManager.create_ghosts()
+
+func create_main_menu():
+	objectManager.create_main_menu()
+
+func get_pacman_data() -> Dictionary[String,Vector2i]:
+	
+	if objectManager.pacman == null:
+		push_error("pacman was not created")
+	
+	return {
+		"curr_dir" : objectManager.pacman.curr_direction,
+		"grid_pos" : objectManager.pacman.grid_position
+	}
+	
+
+
+func get_ghost_data(name: String) -> Dictionary[String, Vector2i]:
+	var ghost: Ghost = objectManager.ghost_map.get(name) as Ghost
+	
+	if ghost == null:
+		push_error(name + " is not a valid ghost name.")
+		
+	return { 
+		"curr_dir": ghost.curr_direction, 
+		"grid_pos": ghost.grid_position
+	}
+
+func connect_all():
+	objectManager.call_deferred("connect_pellet_signals")
+	#objectManager.connect_ghost_signals()
+	#objectManager.connect_pacman_signals()
+	
+	
+func getRedGhostDir():
+	return objectManager.red_ghost.curr_direction
+
+func getRedGhostGridPos():
+	return objectManager.red_ghost.grid_position

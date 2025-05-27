@@ -1,16 +1,21 @@
-[gd_scene load_steps=2 format=3 uid="uid://dvels2qc1c83k"]
+[gd_scene load_steps=3 format=3 uid="uid://dvels2qc1c83k"]
+
+[ext_resource type="Script" uid="uid://bpf40igqg7hyp" path="res://Assets/walkable_tile_small_pellet.gd" id="1_fx164"]
 
 [sub_resource type="RectangleShape2D" id="RectangleShape2D_6vs1q"]
-size = Vector2(12, 12)
+size = Vector2(8, 8)
 
-[node name="WalkableTileSmallPellet" type="Polygon2D"]
+[node name="WalkableTileSmallPellet" type="Area2D" groups=["SmallPelletGroup"]]
+script = ExtResource("1_fx164")
+
+[node name="Tile" type="Polygon2D" parent="."]
 color = Color(0, 0, 0, 1)
-polygon = PackedVector2Array(-16, -16, 16, -16, 16, 16, -16, 16)
+polygon = PackedVector2Array(-16, -16, -16, 16, 16, 16, 16, -16)
 
-[node name="Area2D" type="Area2D" parent="."]
+[node name="Pellet" type="Polygon2D" parent="."]
+polygon = PackedVector2Array(-4, -4, -4, 4, 4, 4, 4, -4)
 
-[node name="CollisionShape2D" type="CollisionShape2D" parent="Area2D"]
+[node name="CollisionShape2D" type="CollisionShape2D" parent="."]
 shape = SubResource("RectangleShape2D_6vs1q")
 
-[node name="Polygon2D" type="Polygon2D" parent="Area2D"]
-polygon = PackedVector2Array(-4, -4, -4, 4, 4, 4, 4, -4)
+[connection signal="body_entered" from="." to="." method="_on_body_entered"]

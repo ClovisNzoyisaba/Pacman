@@ -9,6 +9,8 @@ var grid_position: Vector2i
 
 var speed: int = 150
 
+var warped: bool = false
+
 func _ready() -> void:
 	update_player_grid_position()
 	
@@ -26,6 +28,8 @@ func _physics_process(delta: float) -> void:
 			return
 	
 	velocity = curr_direction * speed
+	
+	check_warp()
 	move_and_slide()
 	
 func handle_input():
@@ -39,8 +43,9 @@ func handle_input():
 		next_direction = Vector2.RIGHT
 
 func can_move(dir: Vector2) -> bool:
-	var check_pos = grid_position + Vector2i(dir)
-	return graph[grid_position].has(check_pos)
+	var check_pos: Vector2i = grid_position + Vector2i(dir)
+	var ghost_house_entrance: Vector2 = Vector2(330,370)
+	return graph[grid_position].has(check_pos) and check_pos != tilemap.local_to_map(ghost_house_entrance)
 
 func is_aligned_to_grid() -> bool:
 	var pixel_position = position
@@ -56,4 +61,12 @@ func setup(position: Vector2, curr_direction: Vector2):
 	self.position = tilemap.map_to_local(tilemap.local_to_map(position))
 	self.curr_direction = curr_direction	
 	self.next_direction = Vector2.ZERO
-	
+
+func check_warp() -> void:
+	if grid_position == tilemap.local_to_map(Vector2(-16,400)) and curr_direction == Vector2i.LEFT:
+		position = tilemap.local_to_map(tilemap.map_to_local(Vector2(680,400)))
+		
+	elif grid_position == tilemap.local_to_map(Vector2(680,400)) and curr_direction == Vector2i.RIGHT:
+		position = tilemap.local_to_map(tilemap.map_to_local(Vector2(-16,400)))
+		
+		

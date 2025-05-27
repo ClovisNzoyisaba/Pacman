@@ -1,20 +1,25 @@
 class_name CyanGhost extends Ghost
 
-func recalculate_chase_path():
-	var start_tile = tilemap.local_to_map(position)
-	var target_tile = GameManager.get_pacman_grid_position()
-	var pac_curr_dir = GameManager.get_pacman_curr_dir()
+func recalculate_chase_target():
+	var red_ghost_data: Dictionary[String, Vector2i] =  GameManager.get_ghost_data("red")
+	var pac_data: Dictionary[String, Vector2i] = GameManager.get_pacman_data() 
 	
-	var used_cells: Array = tilemap.get_used_cells()
+	var red_ghost_grid_pos: Vector2i = red_ghost_data["grid_pos"]
+	var pac_grid_pos: Vector2i = pac_data["grid_pos"]
+	var pac_curr_dir: Vector2i = pac_data["curr_dir"]
+	var target_tile: Vector2i = pac_grid_pos
 	
-	for i in 6:
-		var within_bounds: bool = target_tile in used_cells
-		while !graph.has(target_tile) and within_bounds:
-			target_tile = target_tile + pac_curr_dir
-			within_bounds = target_tile in tilemap.get_used_cells()
-			
-		if !within_bounds:
-			break	
-		
-	curr_path = BFS(start_tile, target_tile, graph)
-	curr_path_index = 0
+	var tiles_ahead = 2
+	
+	target_tile += Vector2i(pac_curr_dir) * tiles_ahead
+	
+	var v: Vector2 = tilemap.map_to_local(target_tile) - tilemap.map_to_local(red_ghost_grid_pos)
+	
+	var v2: Vector2 = v * 2
+	
+	var v3: Vector2 = tilemap.map_to_local(red_ghost_grid_pos) + v2
+	
+	target_grid_position = tilemap.local_to_map(v3)
+	
+	
+	
