@@ -10,43 +10,23 @@ func setup(tile_map_layer: TileMapLayer, root: Node, main_menu: MainMenu, hud: H
 	mapManager = MapManager.new(tile_map_layer)
 	musicManager = MusicManager.new()
 	objectManager = ObjectManager.new(root)
-	transitionManager = TransitionManager.new()
+	transitionManager = TransitionManager.new(main_menu)
 	uiManager = UIManager.new(main_menu, hud)
+	connect_all()
 
-func getGraph() -> Dictionary:
-	return mapManager.graph
-
-func getTileMap() -> TileMapLayer:
-	return mapManager.tile_map_layer
+const STATE = TransitionManager.STATE
 	
-func getScore() -> int:
-	return uiManager.score
-	
-func getLives() -> int:
-	return uiManager.lives
+func get_map_data():
+	return {
+		"graph": mapManager.graph,
+		"tilemap": mapManager.tile_map_layer
+	}
 
-func getState() -> TransitionManager.STATE:
-	return transitionManager.curr_state
-
-func setState(state: TransitionManager.STATE):
-	if transitionManager.curr_state != state:
-		transitionManager.curr_state = state
-	
-func get_pacman_grid_position() -> Vector2i:
-	return objectManager.pacman.grid_position
-
-func get_pacman_curr_dir() -> Vector2i:
-	return objectManager.pacman.curr_direction
-
-func start_new_game():
-	pass
-
-func create_entities():
-	objectManager.create_pacman()
-	objectManager.create_ghosts()
-
-func create_main_menu():
-	objectManager.create_main_menu()
+func get_stat_data():
+	return {
+		"score": uiManager.score,
+		"lives": uiManager.lives
+	}
 
 func get_pacman_data() -> Dictionary[String,Vector2i]:
 	
@@ -58,8 +38,6 @@ func get_pacman_data() -> Dictionary[String,Vector2i]:
 		"grid_pos" : objectManager.pacman.grid_position
 	}
 	
-
-
 func get_ghost_data(name: String) -> Dictionary[String, Vector2i]:
 	var ghost: Ghost = objectManager.ghost_map.get(name) as Ghost
 	
@@ -71,14 +49,31 @@ func get_ghost_data(name: String) -> Dictionary[String, Vector2i]:
 		"grid_pos": ghost.grid_position
 	}
 
+func get_state() -> TransitionManager.STATE:
+	return transitionManager.curr_state 
+
+func start_new_game():
+	reset()
+	create_entities()
+
+func end_game():
+	transitionManager.transition_to_menu()
+
+func reset():
+	uiManager.reset()
+	objectManager.clear_objects()
+		
+func create_entities():
+	objectManager.create_pacman()
+	objectManager.create_ghosts()
+	objectManager.reset_pellets()
+
 func connect_all():
 	objectManager.call_deferred("connect_pellet_signals")
-	#objectManager.connect_ghost_signals()
-	#objectManager.connect_pacman_signals()
+	objectManager.awarded_points.connect(uiManager.update_score)
+	objectManager.pacman_died.connect(end_game)
+	transitionManager.transitioned_to_menu.connect(start_new_game)
 	
 	
-func getRedGhostDir():
-	return objectManager.red_ghost.curr_direction
-
-func getRedGhostGridPos():
-	return objectManager.red_ghost.grid_position
+	
+	

@@ -1,14 +1,12 @@
 class_name Ghost extends Area2D
 
-signal no_longer_eatable
-
 var graph: Dictionary
 var tilemap: TileMapLayer
 
 var curr_direction: Vector2i = Vector2i(1,0)
 
-var scatter_position: Vector2
-var return_position: Vector2
+var scatter_position: Vector2i
+var return_position: Vector2i
 
 var grid_position: Vector2i
 var target_grid_position: Vector2i
@@ -22,27 +20,38 @@ var scatter_time: float = 15
 var frightened_time: float = 10
 var curr_time: float = 0.0
 
-enum GHOSTSTATE {CHASE, SCATTER, FRIGHTEND, HOUSETRAVERSAL, RETURNING}
+enum GHOSTSTATE {CHASE, SCATTER, FRIGHTEND, HOUSETRAVERSAL, RETURNING, TRANSITIONING}
 var curr_ghost_state: GHOSTSTATE
 
 var speed: int = 100
 
 func setup(spawn_position: Vector2, scatter_position: Vector2): # needs to be called before it is added to the scene tree
-	graph = GameManager.getGraph()
-	tilemap = GameManager.getTileMap()
+	var mapData = GameManager.get_map_data()
+	graph = mapData.get("graph")
+	tilemap = mapData.get("tilemap")
+	
 	self.position = tilemap.map_to_local(tilemap.local_to_map(spawn_position))
-	scatter_position = tilemap.local_to_map(scatter_position)
-	return_position = tilemap.local_to_map(spawn_position)
-	grid_position = tilemap.local_to_map(position)
-	house_path = BFS(tilemap.local_to_map(spawn_position), tilemap.local_to_map(Vector2(335,335)), graph)
+	self.scatter_position = tilemap.local_to_map(scatter_position)
+	print(scatter_position)
+	self.return_position = tilemap.local_to_map(spawn_position)
+	self.grid_position = tilemap.local_to_map(position)
+	self.house_path = BFS(tilemap.local_to_map(spawn_position), tilemap.local_to_map(Vector2(335,335)), graph)
 	traverse_house()
 	find_next_tile()
 
 func _process(delta: float) -> void:
+	if GameManager.get_state() != GameManager.STATE.GAME:
+		return
+		
+	if is_frightened():
+		print("yes")
+	else:
+		print("no")
+		
 	curr_time += delta
+	
 	match curr_ghost_state:
 		GHOSTSTATE.CHASE:
-			chase()
 			if curr_time > chase_time:
 				scatter()
 				curr_time = 0
@@ -52,7 +61,6 @@ func _process(delta: float) -> void:
 				curr_time = 0
 		GHOSTSTATE.FRIGHTEND:
 			if curr_time > frightened_time:
-				no_longer_eatable.emit()
 				chase()
 				curr_time = 0
 		GHOSTSTATE.HOUSETRAVERSAL:
@@ -156,7 +164,6 @@ func traverse_house() -> void:
 
 func return_home() -> void:
 	speed = 300
-	no_longer_eatable.emit()
 	curr_ghost_state = GHOSTSTATE.RETURNING
 	target_grid_position = return_position
 

@@ -1,6 +1,6 @@
 shader_type canvas_item;
 
-uniform float progress: hint_range(0.0, 1.0, 0.01);
+uniform float progress: hint_range(0.0, 1.0, 0.001);
 uniform float gridSize: hint_range(1.0, 20.0, 1.0);
 
 void vertex() {
@@ -14,9 +14,9 @@ void fragment() {
 
 	float gridProgress = (progress / (gridX + gridY)) * gridSize * 2.;
 
-	float shade = step(max(fract(UV.x * gridSize), fract(UV.y * gridSize)) , gridProgress);
+	float shade = step(max(fract(UV.x), fract(UV.y)), gridProgress);
 
-	vec4 gradiant = mix(vec4(1.0,1.0,1.0,1.0), vec4(0.0,0.0,0.0,1.0), gridProgress);
+	vec4 gradiant = mix(vec4(1.0,1.0,0.0,1.0), vec4(0.0,0.0,0.0,1.0), gridProgress);
 
 	vec4 finalColor = mix(vec4(0,0,0,0), gradiant, shade);
 

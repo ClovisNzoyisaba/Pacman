@@ -15,6 +15,9 @@ func _ready() -> void:
 	update_player_grid_position()
 	
 func _physics_process(delta: float) -> void:
+	if GameManager.get_state() != GameManager.STATE.GAME:
+		return
+		
 	update_player_grid_position()
 	handle_input()
 
@@ -56,8 +59,10 @@ func update_player_grid_position():
 	grid_position = tilemap.local_to_map(position)
 		
 func setup(position: Vector2, curr_direction: Vector2):
-	graph = GameManager.getGraph()
-	tilemap = GameManager.getTileMap()
+	var mapData = GameManager.get_map_data()
+	graph = mapData.get("graph")
+	tilemap = mapData.get("tilemap")
+	
 	self.position = tilemap.map_to_local(tilemap.local_to_map(position))
 	self.curr_direction = curr_direction	
 	self.next_direction = Vector2.ZERO

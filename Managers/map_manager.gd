@@ -9,14 +9,6 @@ func _init(tile_map_layer: TileMapLayer) -> void:
 	build_graph()
 	
 func build_graph() -> void:
-	#for cell in tile_map_layer.get_used_cells():
-		#if is_walkable(cell):
-			#var neighbors = []
-			#for offset in [Vector2i.LEFT, Vector2i.RIGHT, Vector2i.UP, Vector2i.DOWN]:
-				#var neighbor = cell + offset
-				#if is_walkable(neighbor):
-					#neighbors.append(neighbor)
-					#graph[cell] = neighbors
 	graph.clear()
 	for cell in tile_map_layer.get_used_cells():
 		if is_walkable(cell):
@@ -29,17 +21,8 @@ func build_graph() -> void:
 				if not graph.has(neighbor):
 					graph[neighbor] = []
 				graph[cell].append(neighbor)
-				
-	#add_tunnel_tiles()
 	
 func is_walkable(coord: Vector2i) -> bool:
 	var tile_id = tile_map_layer.get_cell_source_id(coord)  # <-- this is the internal tile ID
 	return tile_id != 2
-	
-			
-#func add_tunnel_tiles() -> void:
-	#var leftTunnelExit: Vector2i = tile_map_layer.local_to_map(Vector2(16, 400))
-	#var rightTunnelExit: Vector2i = tile_map_layer.local_to_map(Vector2(656, 400))
-	#graph[leftTunnelExit] = [tile_map_layer.local_to_map(Vector2(-16,400))]
-	#graph[rightTunnelExit] = [tile_map_layer.local_to_map(Vector2(680,400))]
 	

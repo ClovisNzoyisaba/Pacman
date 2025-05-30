@@ -5,8 +5,6 @@ const ORANGE_GHOST = preload("res://Entities/Ghosts/Orange/OrangeGhost.tscn")
 const PINK_GHOST = preload("res://Entities/Ghosts/Pink/PinkGhost.tscn")
 const RED_GHOST = preload("res://Entities/Ghosts/Red/RedGhost.tscn")
 const PACMAN = preload("res://Entities/Pacman/Pacman.tscn")
-const MAIN_MENU = preload("res://UI/MainMenu.tscn")
-const TEST_GHOST = preload("res://Entities/Ghosts/TestGhost/TestGhost.tscn")
 
 var GHOST_SCENES: Dictionary = {
 	"red": RED_GHOST,
@@ -18,9 +16,11 @@ var GHOST_SCENES: Dictionary = {
 var ghost_map: Dictionary = {}
 
 var pacman: Pacman
-var main_menu: MainMenu
 
 var root: Game
+
+signal pacman_died
+signal awarded_points(points: int)
 
 func _init(root: Game) -> void:
 	self.root = root
@@ -50,29 +50,19 @@ func create_ghosts(
 	
 func create_pacman(position: Vector2 = Vector2(338,593), direction: Vector2i = Vector2i(0,1)) -> void:
 	pacman = PACMAN.instantiate()
-	#connect_pacman_signals()
 	pacman.setup(position, direction)
 	root.add_child(pacman)
 
-func create_main_menu() -> void:
-	main_menu = MAIN_MENU.instantiate()
-	#connect_main_menu_signals()
-	root.add(main_menu)
-
-func create_test_ghost(position: Vector2, scatter_position: Vector2) -> void:
-	var test_ghost = TEST_GHOST.instantiate()
-	test_ghost.setup(position, scatter_position)
-	root.add_child(test_ghost)
+func create_objects() -> void:
+	create_ghosts()
+	create_pacman()
 	
-func clear_obejcts() -> void:
-	(ghost_map["red"] as Ghost).queue_free()
-	(ghost_map["orange"] as Ghost).queue_free()
-	(ghost_map["pink"] as Ghost).queue_free()
-	(ghost_map["cyan"] as Ghost).queue_free()
-	pacman.queue_free()
-
-func delete_main_menu() -> void:
-	main_menu.queue_free()
+func clear_objects() -> void:
+	for ghost in ghost_map.values():
+		ghost.queue_free()
+	ghost_map.clear()
+	if pacman:
+		pacman.queue_free()
 	
 func connect_pellet_signals() -> void:
 	for small_pellet in root.get_tree().get_nodes_in_group("SmallPelletGroup"):
@@ -80,30 +70,29 @@ func connect_pellet_signals() -> void:
 		
 	for power_pellet in root.get_tree().get_nodes_in_group("BigPelletGroup"):
 		power_pellet.connect("body_entered", handle_power_pellet_collection.bind(power_pellet), CONNECT_ONE_SHOT)
+
+func reset_pellets() -> void:
+	for pellet in root.get_tree().get_nodes_in_group("SmallPelletGroup"):
+		pellet.pellet.visible = true
+		
+	for pellet in root.get_tree().get_nodes_in_group("BigPelletGroup"):
+		pellet.pellet.visible = true
 	
-#func connect_pacman_signal() -> void:
-	#pass
-
-#func connect_ghost_signal() -> void:
-	#for ghost in root.get_tree().get_nodes_in_group("Ghosts"):
-		#ghost.connect("body_entered", handle_ghost_body_entered.bind(ghost))
-
-#func connect_main_menu_signals() -> void:
-	#pass
+	connect_pellet_signals()
 
 func handle_small_pellet_collection(body, small_pellet: Node2D) -> void:
-	GameManager.uiManager.update_score(100)
+	awarded_points.emit(100)
 	small_pellet.pellet.visible = false
 
 func handle_power_pellet_collection(body, power_pellet: Node2D) -> void:
-	GameManager.uiManager.update_score(500)
+	awarded_points.emit(500)
 	power_pellet.pellet.visible = false
 	frighten_all_ghosts()
 
 func frighten_all_ghosts():
 	for ghost in root.get_tree().get_nodes_in_group("Ghosts"):
 		ghost = ghost as Ghost
-		if !ghost.is_traversing_house():
+		if !ghost.is_traversing_house() and !ghost.is_frightened():
 			ghost.frighten()
 
 func handle_ghost_body_entered(body, ghost: Ghost) -> void:
@@ -118,8 +107,15 @@ func handle_ghost_body_entered(body, ghost: Ghost) -> void:
 			handle_pac_death()
 
 func handle_ghost_death(ghost: Ghost):
-	GameManager.uiManager.update_score(1000)
+	awarded_points.emit(1000)
 	ghost.return_home()
 
 func handle_pac_death():
-	print("dead")
+	disable_ghost_signals()
+	pacman_died.emit()
+
+func disable_ghost_signals():
+	for ghost in root.get_tree().get_nodes_in_group("Ghosts"):
+		ghost = ghost as Ghost
+		ghost.disconnect("body_entered", handle_ghost_body_entered)
+		

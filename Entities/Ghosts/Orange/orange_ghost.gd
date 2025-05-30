@@ -1,8 +1,10 @@
 class_name OrangeGhost extends RedGhost
 
 func recalculate_chase_target():
+	var pac_data: Dictionary[String, Vector2i] = GameManager.get_pacman_data() 
+	var pac_grid_pos: Vector2i = pac_data["grid_pos"]
 	super.recalculate_chase_target()
-	var dist = manhattan_distance(grid_position, GameManager.get_pacman_grid_position())
+	var dist = manhattan_distance(grid_position, pac_grid_pos)
 	if dist < 4:
 		scatter()
 	

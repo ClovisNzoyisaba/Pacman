@@ -1,6 +1,0 @@
-[gd_scene load_steps=2 format=3 uid="uid://djdqnbxb81kpy"]
-
-[ext_resource type="Script" uid="uid://blo3iuoepgn11" path="res://UI/main_menu.gd" id="1_uahxu"]
-
-[node name="MainMenu" type="CanvasLayer"]
-script = ExtResource("1_uahxu")
