@@ -92,7 +92,7 @@ func handle_power_pellet_collection(body, power_pellet: Node2D) -> void:
 func frighten_all_ghosts():
 	for ghost in root.get_tree().get_nodes_in_group("Ghosts"):
 		ghost = ghost as Ghost
-		if !ghost.is_traversing_house() and !ghost.is_frightened():
+		if !ghost.is_traversing_house():
 			ghost.frighten()
 
 func handle_ghost_body_entered(body, ghost: Ghost) -> void:

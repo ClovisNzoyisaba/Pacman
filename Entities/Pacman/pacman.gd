@@ -1,5 +1,7 @@
 class_name Pacman extends CharacterBody2D
 
+@onready var animation_player: AnimationPlayer = $AnimationPlayer
+
 var graph: Dictionary = {}
 var tilemap: TileMapLayer
 
@@ -13,6 +15,8 @@ var warped: bool = false
 
 func _ready() -> void:
 	update_player_grid_position()
+	animation_player.play("chomp")
+
 	
 func _physics_process(delta: float) -> void:
 	if GameManager.get_state() != GameManager.STATE.GAME:
@@ -23,9 +27,11 @@ func _physics_process(delta: float) -> void:
 
 	if is_aligned_to_grid():
 		if can_move(next_direction):
+			self.rotation = (Vector2(next_direction).angle())
 			position = tilemap.map_to_local(tilemap.local_to_map(position))
 			curr_direction = next_direction
 			next_direction = Vector2.ZERO
+			
 		elif not can_move(curr_direction):
 			velocity = Vector2.ZERO
 			return
@@ -36,6 +42,7 @@ func _physics_process(delta: float) -> void:
 	move_and_slide()
 	
 func handle_input():
+	
 	if Input.is_action_just_pressed("ui_up"):
 		next_direction = Vector2.UP
 	elif Input.is_action_just_pressed("ui_down"):

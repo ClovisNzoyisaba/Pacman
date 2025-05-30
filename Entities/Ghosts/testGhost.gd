@@ -43,11 +43,6 @@ func _process(delta: float) -> void:
 	if GameManager.get_state() != GameManager.STATE.GAME:
 		return
 		
-	if is_frightened():
-		print("yes")
-	else:
-		print("no")
-		
 	curr_time += delta
 	
 	match curr_ghost_state:
