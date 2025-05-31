@@ -1,7 +1,7 @@
 [gd_scene load_steps=4 format=3 uid="uid://c1fpwi4144tv0"]
 
 [ext_resource type="Script" uid="uid://c7ryurduic3bm" path="res://Entities/Ghosts/Red/red_ghost.gd" id="1_46s10"]
-[ext_resource type="PackedScene" uid="uid://b5dw2jqg73xtk" path="res://Entities/Ghosts/ghost_body.tscn" id="2_5n4px"]
+[ext_resource type="PackedScene" uid="uid://b5dw2jqg73xtk" path="res://Entities/Ghosts/Template/ghost_body.tscn" id="2_5n4px"]
 
 [sub_resource type="RectangleShape2D" id="RectangleShape2D_p3xjg"]
 size = Vector2(24, 24)
@@ -13,3 +13,4 @@ script = ExtResource("1_46s10")
 shape = SubResource("RectangleShape2D_p3xjg")
 
 [node name="GhostBody" parent="." instance=ExtResource("2_5n4px")]
+color = Color(1, 0, 0, 1)

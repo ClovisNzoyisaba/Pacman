@@ -1,7 +1,7 @@
 [gd_scene load_steps=4 format=3 uid="uid://c31ah3rfwssai"]
 
 [ext_resource type="Script" uid="uid://b6xt5nfjrcd3m" path="res://Entities/Ghosts/Pink/pink_ghost.gd" id="1_xka7l"]
-[ext_resource type="PackedScene" uid="uid://b5dw2jqg73xtk" path="res://Entities/Ghosts/ghost_body.tscn" id="2_vkwye"]
+[ext_resource type="PackedScene" uid="uid://b5dw2jqg73xtk" path="res://Entities/Ghosts/Template/ghost_body.tscn" id="2_vkwye"]
 
 [sub_resource type="RectangleShape2D" id="RectangleShape2D_bqkl0"]
 size = Vector2(24, 24)

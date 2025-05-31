@@ -1,20 +1,47 @@
-[gd_resource type="Theme" load_steps=3 format=3 uid="uid://clsgpvfplxc6o"]
+[gd_resource type="Theme" load_steps=6 format=3 uid="uid://clsgpvfplxc6o"]
 
 [ext_resource type="FontFile" uid="uid://ydwyfu8404rs" path="res://Assets/PixelOperator8-Bold.ttf" id="1_272d7"]
 
-[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_8pxnv"]
-bg_color = Color(0.745098, 0.745098, 0.745098, 1)
-border_width_left = 25
-border_width_top = 25
-border_width_right = 25
-border_width_bottom = 25
+[sub_resource type="StyleBoxEmpty" id="StyleBoxEmpty_272d7"]
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_nykh6"]
+bg_color = Color(1, 0.865572, 0.305288, 1)
+border_width_left = 10
+border_width_top = 10
+border_width_right = 10
+border_width_bottom = 10
 border_color = Color(0, 0, 0, 1)
 border_blend = true
 corner_radius_top_left = 10
 corner_radius_top_right = 10
 corner_radius_bottom_right = 10
 corner_radius_bottom_left = 10
-corner_detail = 2
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_8pxnv"]
+bg_color = Color(1, 0.843137, 0, 1)
+border_width_left = 10
+border_width_top = 10
+border_width_right = 10
+border_width_bottom = 10
+border_color = Color(0, 0, 0, 1)
+border_blend = true
+corner_radius_top_left = 10
+corner_radius_top_right = 10
+corner_radius_bottom_right = 10
+corner_radius_bottom_left = 10
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_nhl0i"]
+bg_color = Color(0.55518, 0.464455, 0, 1)
+border_width_left = 10
+border_width_top = 10
+border_width_right = 10
+border_width_bottom = 10
+border_color = Color(0, 0, 0, 1)
+border_blend = true
+corner_radius_top_left = 10
+corner_radius_top_right = 10
+corner_radius_bottom_right = 10
+corner_radius_bottom_left = 10
 
 [resource]
 Button/colors/font_color = Color(1, 1, 1, 1)
@@ -22,9 +49,17 @@ Button/colors/font_outline_color = Color(0, 0, 0, 1)
 Button/constants/outline_size = 15
 Button/font_sizes/font_size = 32
 Button/fonts/font = ExtResource("1_272d7")
+Button/styles/focus = SubResource("StyleBoxEmpty_272d7")
+Button/styles/hover = SubResource("StyleBoxFlat_nykh6")
 Button/styles/normal = SubResource("StyleBoxFlat_8pxnv")
+Button/styles/pressed = SubResource("StyleBoxFlat_nhl0i")
 Label/colors/font_color = Color(1, 0.843137, 0, 1)
 Label/colors/font_outline_color = Color(1, 1, 1, 1)
 Label/constants/outline_size = 15
 Label/font_sizes/font_size = 64
 Label/fonts/font = ExtResource("1_272d7")
+RichTextLabel/colors/default_color = Color(1, 0.843137, 0, 1)
+RichTextLabel/colors/font_outline_color = Color(1, 1, 1, 1)
+RichTextLabel/constants/outline_size = 10
+RichTextLabel/font_sizes/normal_font_size = 64
+RichTextLabel/fonts/normal_font = ExtResource("1_272d7")

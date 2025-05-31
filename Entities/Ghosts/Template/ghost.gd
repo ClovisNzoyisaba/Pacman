@@ -22,22 +22,24 @@ var curr_time: float = 0.0
 
 enum GHOSTSTATE {CHASE, SCATTER, FRIGHTEND, HOUSETRAVERSAL, RETURNING, TRANSITIONING}
 var curr_ghost_state: GHOSTSTATE
+var prev_ghost_state: GHOSTSTATE
 
 var speed: int = 100
+@onready var colorTween: Tween = get_tree().create_tween()
+var original_color: Color = modulate
 
 func setup(spawn_position: Vector2, scatter_position: Vector2): # needs to be called before it is added to the scene tree
 	var mapData = GameManager.get_map_data()
 	graph = mapData.get("graph")
 	tilemap = mapData.get("tilemap")
-	
 	self.position = tilemap.map_to_local(tilemap.local_to_map(spawn_position))
 	self.scatter_position = tilemap.local_to_map(scatter_position)
-	print(scatter_position)
 	self.return_position = tilemap.local_to_map(spawn_position)
 	self.grid_position = tilemap.local_to_map(position)
 	self.house_path = BFS(tilemap.local_to_map(spawn_position), tilemap.local_to_map(Vector2(335,335)), graph)
 	traverse_house()
 	find_next_tile()
+	
 
 func _process(delta: float) -> void:
 	if GameManager.get_state() != GameManager.STATE.GAME:
@@ -49,23 +51,18 @@ func _process(delta: float) -> void:
 		GHOSTSTATE.CHASE:
 			if curr_time > chase_time:
 				scatter()
-				curr_time = 0
 		GHOSTSTATE.SCATTER:
 			if curr_time > scatter_time:
 				chase()
-				curr_time = 0
 		GHOSTSTATE.FRIGHTEND:
 			if curr_time > frightened_time:
 				chase()
-				curr_time = 0
 		GHOSTSTATE.HOUSETRAVERSAL:
 			if position.distance_to(tilemap.map_to_local(house_path[house_path.size() - 1])) < 4.0:
 				chase()
-				curr_time = 0
 		GHOSTSTATE.RETURNING:
 			if position.distance_to(tilemap.map_to_local(return_position)) < 4.0:
 				traverse_house()
-				curr_time = 0
 	
 	var next_pos = tilemap.map_to_local(next_tile)
 	
@@ -138,28 +135,30 @@ func reconstruct_path(came_from, start: Vector2i, goal: Vector2i) -> Array:
 	
 func scatter() -> void:
 	speed = 100
-	curr_ghost_state = GHOSTSTATE.SCATTER
+	set_state(GHOSTSTATE.SCATTER)
 	target_grid_position = scatter_position
 	
 func chase() -> void:
 	speed = 100
-	curr_ghost_state = GHOSTSTATE.CHASE
+	set_state(GHOSTSTATE.CHASE)
 	recalculate_chase_target()
 
 func frighten() -> void:
 	speed = 50
-	curr_ghost_state = GHOSTSTATE.FRIGHTEND
+	set_state(GHOSTSTATE.FRIGHTEND)
 	var positions: Array = graph.keys()
 	var random_pos = positions[randi_range(0, positions.size() - 1)]
 	target_grid_position = random_pos
 
 func traverse_house() -> void:
+	self.scale = Vector2(1,1)
 	speed = 100
-	curr_ghost_state = GHOSTSTATE.HOUSETRAVERSAL
+	set_state(GHOSTSTATE.HOUSETRAVERSAL)
 
 func return_home() -> void:
 	speed = 300
-	curr_ghost_state = GHOSTSTATE.RETURNING
+	self.scale = Vector2(0.5,0.5)
+	set_state(GHOSTSTATE.RETURNING)
 	target_grid_position = return_position
 
 func check_dir(neighbor: Vector2i) -> bool:
@@ -179,3 +178,29 @@ func is_traversing_house() -> bool:
 		
 func recalculate_chase_target() -> void:
 	pass
+
+
+func set_state(new_state: GHOSTSTATE) -> void:
+	if curr_ghost_state != new_state:
+		curr_time = 0
+		prev_ghost_state = curr_ghost_state
+		curr_ghost_state = new_state
+		handle_animation()
+		
+func handle_animation():
+	match curr_ghost_state:
+		GHOSTSTATE.FRIGHTEND:
+			tween_the_color()
+		_:
+			if is_instance_valid(colorTween):
+				colorTween.kill()
+			modulate = original_color
+
+func tween_the_color():
+	if is_instance_valid(colorTween):
+		colorTween.kill()
+	
+	colorTween = get_tree().create_tween()
+	colorTween.set_loops() # Loop infinitely
+	colorTween.tween_property(self, "modulate", Color(0, 0, 1), 0.25)
+	colorTween.tween_property(self, "modulate", Color(1, 1, 1), 0.25)

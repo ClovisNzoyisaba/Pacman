@@ -10,7 +10,7 @@ func setup(tile_map_layer: TileMapLayer, root: Node, main_menu: MainMenu, hud: H
 	mapManager = MapManager.new(tile_map_layer)
 	musicManager = MusicManager.new()
 	objectManager = ObjectManager.new(root)
-	transitionManager = TransitionManager.new(main_menu)
+	transitionManager = TransitionManager.new(main_menu, hud)
 	uiManager = UIManager.new(main_menu, hud)
 	connect_all()
 
@@ -56,12 +56,17 @@ func start_new_game():
 	reset()
 	create_entities()
 
-func end_game():
-	transitionManager.transition_to_menu()
+func end_game(won: bool):
+	transitionManager.transition_to_menu(won)
 
 func reset():
 	uiManager.reset()
 	objectManager.clear_objects()
+
+func restart():
+	uiManager.update_lives()
+	reset()
+	
 		
 func create_entities():
 	objectManager.create_pacman()
@@ -71,7 +76,8 @@ func create_entities():
 func connect_all():
 	objectManager.call_deferred("connect_pellet_signals")
 	objectManager.awarded_points.connect(uiManager.update_score)
-	objectManager.pacman_died.connect(end_game)
+	objectManager.pacman_died.connect(end_game.bind(false))
+	objectManager.player_won.connect(end_game.bind(true))
 	transitionManager.transitioned_to_menu.connect(start_new_game)
 	
 	

@@ -1,0 +1,10 @@
+[gd_scene load_steps=3 format=3 uid="uid://cyb3c2vw4tgay"]
+
+[ext_resource type="PackedScene" uid="uid://ds7d3uhchcqsl" path="res://Entities/Ghosts/Template/Ghost.tscn" id="1_34jtd"]
+[ext_resource type="Script" uid="uid://b53rda6pjssq" path="res://Entities/Ghosts/Orange/orange_ghost.gd" id="2_ucbfg"]
+
+[node name="OrangeGhost" groups=["Ghosts"] instance=ExtResource("1_34jtd")]
+script = ExtResource("2_ucbfg")
+
+[node name="GhostBody" parent="." index="1"]
+color = Color(1, 0.647059, 0, 1)

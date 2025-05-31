@@ -1,6 +1,45 @@
-[gd_scene load_steps=5 format=3 uid="uid://b5dw2jqg73xtk"]
+[gd_scene load_steps=7 format=3 uid="uid://b5dw2jqg73xtk"]
 
-[ext_resource type="Script" uid="uid://d0w5wvh6057uw" path="res://Entities/Ghosts/ghost_body.gd" id="1_b0ltk"]
+[ext_resource type="Script" uid="uid://d0w5wvh6057uw" path="res://Entities/Ghosts/Template/ghost_body.gd" id="1_7ajbc"]
+
+[sub_resource type="Shader" id="Shader_7ajbc"]
+code = "shader_type canvas_item;
+
+uniform float flash_amount : hint_range(0.0, 1.0) = 0.0;
+uniform vec4 flash_color : source_color = vec4(0.0, 0.5, 1.0, 1.0); // default: blue
+
+void fragment() {
+    vec4 base_color = texture(TEXTURE, UV) * COLOR;
+    vec4 final_color = mix(base_color, flash_color, flash_amount);
+    COLOR = final_color;
+}
+
+//void light() {
+//	// Called for every pixel for every light affecting the CanvasItem.
+//	// Uncomment to replace the default light processing function with this one.
+//}
+"
+
+[sub_resource type="ShaderMaterial" id="ShaderMaterial_2f576"]
+shader = SubResource("Shader_7ajbc")
+shader_parameter/flash_amount = 0.0
+shader_parameter/flash_color = Color(0, 0, 1, 1)
+
+[sub_resource type="Animation" id="Animation_bvgyd"]
+length = 0.001
+step = 1.0
+tracks/0/type = "value"
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/path = NodePath(".:material:shader_parameter/flash_amount")
+tracks/0/interp = 1
+tracks/0/loop_wrap = true
+tracks/0/keys = {
+"times": PackedFloat32Array(0),
+"transitions": PackedFloat32Array(1),
+"update": 0,
+"values": [0.0]
+}
 
 [sub_resource type="Animation" id="Animation_b0ltk"]
 resource_name = "fright"
@@ -9,29 +48,14 @@ step = 1.0
 tracks/0/type = "value"
 tracks/0/imported = false
 tracks/0/enabled = true
-tracks/0/path = NodePath(".:color")
+tracks/0/path = NodePath(".:material:shader_parameter/flash_amount")
 tracks/0/interp = 1
 tracks/0/loop_wrap = true
 tracks/0/keys = {
 "times": PackedFloat32Array(0, 1),
 "transitions": PackedFloat32Array(1, 1),
 "update": 0,
-"values": [Color(0.745098, 0.745098, 0.745098, 1), Color(0, 0, 1, 1)]
-}
-
-[sub_resource type="Animation" id="Animation_bvgyd"]
-length = 0.001
-tracks/0/type = "value"
-tracks/0/imported = false
-tracks/0/enabled = true
-tracks/0/path = NodePath(".:color")
-tracks/0/interp = 1
-tracks/0/loop_wrap = true
-tracks/0/keys = {
-"times": PackedFloat32Array(0),
-"transitions": PackedFloat32Array(1),
-"update": 0,
-"values": [Color(0.745098, 0.745098, 0.745098, 1)]
+"values": [0.0, 1.0]
 }
 
 [sub_resource type="AnimationLibrary" id="AnimationLibrary_yiq8c"]
@@ -41,9 +65,10 @@ _data = {
 }
 
 [node name="GhostBody" type="Polygon2D"]
+material = SubResource("ShaderMaterial_2f576")
 color = Color(0.745098, 0.745098, 0.745098, 1)
 polygon = PackedVector2Array(-12, -12, 12, -12, 12, 12, 8, 8, 4, 12, 0, 8, -4, 12, -8, 8, -12, 12)
-script = ExtResource("1_b0ltk")
+script = ExtResource("1_7ajbc")
 
 [node name="LeftEye" type="Polygon2D" parent="."]
 polygon = PackedVector2Array(-8, -4, -8, 0, -4, 0, -4, -4, -8, -8)
@@ -70,4 +95,4 @@ polygon = PackedVector2Array(-6, -2, -6, 0, -4, 0, -4, -2)
 libraries = {
 &"": SubResource("AnimationLibrary_yiq8c")
 }
-speed_scale = 2.0
+speed_scale = 3.0

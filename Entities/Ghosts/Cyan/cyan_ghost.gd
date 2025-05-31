@@ -9,7 +9,7 @@ func recalculate_chase_target():
 	var pac_curr_dir: Vector2i = pac_data["curr_dir"]
 	var target_tile: Vector2i = pac_grid_pos
 	
-	var tiles_ahead = 2
+	var tiles_ahead = 2 
 	
 	target_tile += Vector2i(pac_curr_dir) * tiles_ahead
 	

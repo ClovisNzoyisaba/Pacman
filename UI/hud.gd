@@ -6,9 +6,8 @@ class_name HUD extends CanvasLayer
 @onready var life_2: TextureRect = $VBoxContainer/HBoxContainer2/VBoxContainer/HBoxContainer/Life2
 @onready var life_3: TextureRect = $VBoxContainer/HBoxContainer2/VBoxContainer/HBoxContainer/Life3
 
-@onready var transition_screen: ColorRect = $TransitionScreen
-
-signal transition_animation_done
+func set_message(message: String):
+	self.message.text = message
 
 func set_score(score: int) -> void:
 	score_num.text = str(int(score_num.text) + score)

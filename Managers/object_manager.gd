@@ -19,8 +19,12 @@ var pacman: Pacman
 
 var root: Game
 
+var pellets_collected: int = 0
+var pellets_available: int = 202
+
 signal pacman_died
 signal awarded_points(points: int)
+signal player_won
 
 func _init(root: Game) -> void:
 	self.root = root
@@ -78,21 +82,32 @@ func reset_pellets() -> void:
 	for pellet in root.get_tree().get_nodes_in_group("BigPelletGroup"):
 		pellet.pellet.visible = true
 	
+	pellets_collected = 0
+	
 	connect_pellet_signals()
 
 func handle_small_pellet_collection(body, small_pellet: Node2D) -> void:
 	awarded_points.emit(100)
 	small_pellet.pellet.visible = false
+	pellets_collected += 1
+	if pellets_collected == pellets_available:
+		disable_ghost_signals()
+		player_won.emit()
 
 func handle_power_pellet_collection(body, power_pellet: Node2D) -> void:
 	awarded_points.emit(500)
 	power_pellet.pellet.visible = false
 	frighten_all_ghosts()
+	pellets_collected += 1
+	if pellets_collected == pellets_available:
+		disable_ghost_signals()
+		player_won.emit()
+
 
 func frighten_all_ghosts():
 	for ghost in root.get_tree().get_nodes_in_group("Ghosts"):
 		ghost = ghost as Ghost
-		if !ghost.is_traversing_house():
+		if !ghost.is_traversing_house() and !ghost.is_returning():
 			ghost.frighten()
 
 func handle_ghost_body_entered(body, ghost: Ghost) -> void:
