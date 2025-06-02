@@ -49,6 +49,7 @@ func _process(delta: float) -> void:
 	
 	match curr_ghost_state:
 		GHOSTSTATE.CHASE:
+			chase() # this is here because orange needs to recalculate it's distance to player, everyone else is fine
 			if curr_time > chase_time:
 				scatter()
 		GHOSTSTATE.SCATTER:
@@ -149,6 +150,7 @@ func frighten() -> void:
 	var positions: Array = graph.keys()
 	var random_pos = positions[randi_range(0, positions.size() - 1)]
 	target_grid_position = random_pos
+	curr_time = 0 # exception
 
 func traverse_house() -> void:
 	self.scale = Vector2(1,1)

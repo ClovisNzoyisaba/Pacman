@@ -6,11 +6,11 @@ var objectManager: ObjectManager
 var transitionManager: TransitionManager
 var uiManager: UIManager
 
-func setup(tile_map_layer: TileMapLayer, root: Node, main_menu: MainMenu, hud: HUD) -> void:
+func setup(tile_map_layer: TileMapLayer, root: Node, main_menu: MainMenu, hud: HUD, animation_player: AnimationPlayer, sounds: Dictionary[String, AudioStreamPlayer]) -> void:
 	mapManager = MapManager.new(tile_map_layer)
-	musicManager = MusicManager.new()
+	musicManager = MusicManager.new(sounds)
 	objectManager = ObjectManager.new(root)
-	transitionManager = TransitionManager.new(main_menu, hud)
+	transitionManager = TransitionManager.new(animation_player)
 	uiManager = UIManager.new(main_menu, hud)
 	connect_all()
 
@@ -53,32 +53,64 @@ func get_state() -> TransitionManager.STATE:
 	return transitionManager.curr_state 
 
 func start_new_game():
-	reset()
+	play_sound("start_button")
+	uiManager.reset_lives()
+	uiManager.reset_score()
+	uiManager.disable_button()
+	uiManager.update_message("GAME START")
 	create_entities()
+	reset_pellets()
+	transitionManager.transition_menu_to_game()
 
-func end_game(won: bool):
-	transitionManager.transition_to_menu(won)
+func start_new_level():
+	play_sound("victory")
+	uiManager.update_message("NEW LEVEL")
+	 # this could also be emitted when a level is restarted, so this is neccessary to distinguish between the two
+	transitionManager.mid_transition_to_game.connect(reset_pellets, CONNECT_ONE_SHOT)
+	transitionManager.transition_game_to_new_game()
 
-func reset():
-	uiManager.reset()
-	objectManager.clear_objects()
+func restart_curr_level():
+	uiManager.update_message("RESTART LEVEL")
+	transitionManager.transition_game_to_new_game()
 
-func restart():
+func end_game():
+	uiManager.update_message("END GAME")
+	transitionManager.transition_game_to_menu()
+
+func handle_player_death():
 	uiManager.update_lives()
-	reset()
-	
+	if uiManager.get_lives() < 1:
+		play_sound("game_over")
+		end_game()
+	else:
+		play_sound("player_death")
+		restart_curr_level()
 		
 func create_entities():
+	objectManager.clear_objects()
 	objectManager.create_pacman()
 	objectManager.create_ghosts()
+
+func reset_pellets():
 	objectManager.reset_pellets()
 
+func play_sound(sound_name: String):
+	musicManager.play_sound(sound_name)
+	
 func connect_all():
 	objectManager.call_deferred("connect_pellet_signals")
+	
 	objectManager.awarded_points.connect(uiManager.update_score)
-	objectManager.pacman_died.connect(end_game.bind(false))
-	objectManager.player_won.connect(end_game.bind(true))
-	transitionManager.transitioned_to_menu.connect(start_new_game)
+	objectManager.pacman_died.connect(handle_player_death)
+	objectManager.player_won.connect(start_new_level)
+	
+	transitionManager.transitioned_to_menu.connect(uiManager.enable_button)
+	
+	transitionManager.mid_transition_to_game.connect(create_entities)
+	transitionManager.mid_transition_to_game.connect(uiManager.update_message.bind("GAME START"))
+	
+	uiManager.start_button.pressed.connect(start_new_game)
+
 	
 	
 	

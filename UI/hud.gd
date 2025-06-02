@@ -5,6 +5,7 @@ class_name HUD extends CanvasLayer
 @onready var life_1: TextureRect = $VBoxContainer/HBoxContainer2/VBoxContainer/HBoxContainer/Life1
 @onready var life_2: TextureRect = $VBoxContainer/HBoxContainer2/VBoxContainer/HBoxContainer/Life2
 @onready var life_3: TextureRect = $VBoxContainer/HBoxContainer2/VBoxContainer/HBoxContainer/Life3
+@onready var message: Label = $message
 
 func set_message(message: String):
 	self.message.text = message
@@ -17,8 +18,11 @@ func set_lives(count: int) -> void:
 	life_2.visible = count >= 2
 	life_3.visible = count >= 3
 
-func reset():
+func reset_score():
 	score_num.text = str(0)
+	
+
+func reset_lives():
 	life_1.visible = true
 	life_2.visible = true
 	life_3.visible = true

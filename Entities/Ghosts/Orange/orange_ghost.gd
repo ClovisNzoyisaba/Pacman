@@ -5,7 +5,7 @@ func recalculate_chase_target():
 	var pac_grid_pos: Vector2i = pac_data["grid_pos"]
 	super.recalculate_chase_target()
 	var dist = manhattan_distance(grid_position, pac_grid_pos)
-	if dist < 4:
+	if dist < 8:
 		scatter()
 	
 func manhattan_distance(a: Vector2i, b: Vector2i) -> int:

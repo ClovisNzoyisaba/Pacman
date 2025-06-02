@@ -87,14 +87,17 @@ func reset_pellets() -> void:
 	connect_pellet_signals()
 
 func handle_small_pellet_collection(body, small_pellet: Node2D) -> void:
+	GameManager.play_sound("pellet")
 	awarded_points.emit(100)
 	small_pellet.pellet.visible = false
 	pellets_collected += 1
 	if pellets_collected == pellets_available:
 		disable_ghost_signals()
 		player_won.emit()
+		pellets_collected = 0
 
 func handle_power_pellet_collection(body, power_pellet: Node2D) -> void:
+	GameManager.play_sound("power_pellet")
 	awarded_points.emit(500)
 	power_pellet.pellet.visible = false
 	frighten_all_ghosts()
@@ -102,6 +105,7 @@ func handle_power_pellet_collection(body, power_pellet: Node2D) -> void:
 	if pellets_collected == pellets_available:
 		disable_ghost_signals()
 		player_won.emit()
+		pellets_collected = 0
 
 
 func frighten_all_ghosts():
@@ -122,6 +126,7 @@ func handle_ghost_body_entered(body, ghost: Ghost) -> void:
 			handle_pac_death()
 
 func handle_ghost_death(ghost: Ghost):
+	GameManager.play_sound("ghost_death")
 	awarded_points.emit(1000)
 	ghost.return_home()
 
