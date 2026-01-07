@@ -28,11 +28,11 @@ Pathfinding was the most challenging part of the project and where my design thi
    - Ultimately overkill for a uniform-cost grid.  
 
 2. **Pacman’s Original Algorithm (research)**  
-   - Ghosts simply move toward the **neighboring walkable tile closest to the player**.  
+   - Ghosts simply move toward the neighboring walkable tile closest to the player.  
    - Efficient, simple, and faithful to the arcade game.  
 
 3. **Hybrid Approach (final choice)**  
-   - Pacman’s method worked in most cases, but failed in **tight enclosures** (e.g., ghost house), where ghosts can’t move backward and risk interpolating into walls (causing `nil` references).  
+   - Pacman’s method worked in most cases, but failed in tight enclosures (e.g., ghost house), where ghosts can’t move backward and risk interpolating into walls (causing `nil` references).  
    - Solution: use **Pacman’s neighbor-check** method by default, but fall back on **BFS** when ghosts need to escape the enclosure.  
    - This combination kept gameplay authentic while solving edge cases.  
 
